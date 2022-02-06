@@ -1,0 +1,5 @@
+language: node-typescript-microservice
+fprocess: node ./dist/index.js
+welcome_message: |
+  You have created a new Node 14 Microserice with Typescript and Express
+
