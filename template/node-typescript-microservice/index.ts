@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 import handle from "./function/handler";
 require('dotenv').config({ path: "./function/.env" });
 
+const fs = require('fs').promises;
 const app = express();
 
 const defaultMaxSize = "100kb";
@@ -18,6 +19,21 @@ app.use(function addDefaultContentType(req, res, next) {
   }
   next();
 });
+
+if (process.env.NODE_ENV != "test")
+  app.use(addBasicAuth);
+
+async function addBasicAuth(req, res, next) {
+
+  let apiKey = await fs.readFile("/var/openfaas/secrets/api-key", "utf8");
+  let auth = req.headers["api-key"]
+  if (auth && auth == apiKey)
+    next();
+
+  res.statusCode = 401;
+  res.setHeader('WWW-Authenticate', 'OpenFass realm="api-key"');
+  res.end({ "message": "No API key found in request" });
+}
 
 if (process.env.RAW_BODY === "true") {
   app.use(bodyParser.raw({ type: "*/*", limit: rawLimit }));
