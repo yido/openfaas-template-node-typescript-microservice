@@ -25,7 +25,7 @@ app.use(function addDefaultContentType(req, res, next) {
 });
 
 if (use_basic_auth)
-  app.use(addBasicAuth);
+    app.use(addBasicAuth);
 
 console.log("process.env.BASIC_AUTH",process.env.BASIC_AUTH);
 console.log("process.env.API_KEY_NAME",process.env.API_KEY_NAME);
