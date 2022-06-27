@@ -43,6 +43,8 @@ async function addBasicAuth(req, res, next) {
   catch (error: any) {
     auth = false;
     msg = { "message": `Unable to read ${api_key_name} from secrets, error: ${error.message}` };
+    
+   console.log("we are here error:  --> ",JSON.stringify(msg));
     res.statusCode = 401;
     res.setHeader('WWW-Authenticate', 'OpenFass realm="' + api_key_name + '"');
     res.send(msg);
