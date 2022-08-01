@@ -33,7 +33,7 @@ console.log("use_basic_auth",use_basic_auth);
 
 async function addBasicAuth(req, res, next) {
   if ('OPTIONS' == req.method && process.env.ENABLE_CORS) {
-    res.send(200);
+     next();
   }
 
   let auth = api_key_name ? req.headers[api_key_name] : undefined;
