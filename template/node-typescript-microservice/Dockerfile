@@ -60,9 +60,9 @@ ENV fprocess="node ./dist/index.js"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:3000"
 
-ENV exec_timeout="10s"
-ENV write_timeout="15s"
-ENV read_timeout="15s"
+ENV exec_timeout="120s"
+ENV write_timeout="150s"
+ENV read_timeout="150s"
 
 ENV prefix_logs="false"
 
