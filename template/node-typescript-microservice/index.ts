@@ -27,10 +27,6 @@ app.use(function addDefaultContentType(req, res, next) {
 if (use_basic_auth)
     app.use(addBasicAuth);
 
-console.log("process.env.BASIC_AUTH",process.env.BASIC_AUTH);
-console.log("process.env.API_KEY_NAME",process.env.API_KEY_NAME);
-console.log("use_basic_auth",use_basic_auth);
-
 async function addBasicAuth(req, res, next) {
   if ('OPTIONS' == req.method && process.env.ENABLE_CORS) {
      next();
@@ -50,9 +46,6 @@ async function addBasicAuth(req, res, next) {
     res.send(msg);
     res.end();
   }
-
-console.log("apiKey --> ",apiKey);
-console.log("auth --> ",auth);
   
   if (auth && auth == apiKey) {
     next();
