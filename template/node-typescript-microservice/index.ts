@@ -16,6 +16,15 @@ const jsonLimit = process.env.MAX_JSON_SIZE || defaultMaxSize;
 const api_key_name = process.env.API_KEY_NAME;
 const use_basic_auth = process.env.BASIC_AUTH && api_key_name && process.env.NODE_ENV && process.env.NODE_ENV != "test";
 
+const ContentType = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+};
+
+export const HEADERS = { ...ContentType };
+
 
 app.use(function addDefaultContentType(req, res, next) {
   if (!req.headers["content-type"]) {
@@ -33,6 +42,8 @@ console.log("use_basic_auth",use_basic_auth);
 
 async function addBasicAuth(req, res, next) {
   if ('OPTIONS' == req.method && process.env.ENABLE_CORS) {
+
+    res.set(HEADERS);
      next();
   }
 
