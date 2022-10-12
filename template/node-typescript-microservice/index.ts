@@ -34,17 +34,17 @@ app.use(function addDefaultContentType(req, res, next) {
 });
 
 if (use_basic_auth)
-    app.use(addBasicAuth);
+  app.use(addBasicAuth);
 
-console.log("process.env.BASIC_AUTH",process.env.BASIC_AUTH);
-console.log("process.env.API_KEY_NAME",process.env.API_KEY_NAME);
-console.log("use_basic_auth",use_basic_auth);
+console.log("process.env.BASIC_AUTH", process.env.BASIC_AUTH);
+console.log("process.env.API_KEY_NAME", process.env.API_KEY_NAME);
+console.log("use_basic_auth", use_basic_auth);
 
 async function addBasicAuth(req, res, next) {
   if ('OPTIONS' == req.method && process.env.ENABLE_CORS) {
 
     //res.set(HEADERS);
-     next();
+    next();
   }
 
   let auth = api_key_name ? req.headers[api_key_name] : undefined;
@@ -54,17 +54,17 @@ async function addBasicAuth(req, res, next) {
   catch (error: any) {
     auth = false;
     msg = { "message": `Unable to read ${api_key_name} from secrets, error: ${error.message}` };
-    
-   console.log("we are here error:  --> ",JSON.stringify(msg));
+
+    console.log("we are here error:  --> ", JSON.stringify(msg));
     res.statusCode = 401;
     res.setHeader('WWW-Authenticate', 'OpenFass realm="' + api_key_name + '"');
     res.send(msg);
     res.end();
   }
-  
-  console.log("apiKey --> ",apiKey);
-  console.log("auth --> ",auth);
-  
+
+  console.log("apiKey --> ", apiKey);
+  console.log("auth --> ", auth);
+
   if (auth && auth == apiKey) {
     next();
   }
@@ -94,7 +94,14 @@ if (process.env.ENABLE_CORS) {
 
 
 async function init() {
-  await handle({ "app": app });
+  try { 
+    await handle({ "app": app });
+
+  } catch (error: any) {
+
+    const msg = { "message": `Error during excuting function: ${error.message}` }; 
+    console.log("Unhandled Exception :  --> ", JSON.stringify(msg)); 
+  }
 
   const port = process.env.http_port || 3000;
   app.disable('x-powered-by');
