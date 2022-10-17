@@ -47,6 +47,8 @@ async function addBasicAuth(req, res, next) {
   else
   {
     let auth = api_key_name ? req.headers[api_key_name] : undefined;
+    let auth2 = api_key_name ? req.headers[api_key_name.replace("-","")] : undefined;
+    
     let msg = { "message": "No API key found in request" };
     let apiKey = "";
     try { apiKey = await fs.readFile("/var/openfaas/secrets/" + api_key_name, "utf8"); }
@@ -63,8 +65,9 @@ async function addBasicAuth(req, res, next) {
 
     console.log("apiKey --> ", apiKey);
     console.log("auth --> ", auth);
+    console.log("auth2 --> ", auth2);
 
-    if (auth && auth == apiKey) {
+    if (auth && auth == apiKey || (auth2 && auth2 == apiKey)) {
       next();
     }
     else {
